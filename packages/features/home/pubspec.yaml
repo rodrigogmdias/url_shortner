@@ -1,6 +1,7 @@
 name: home
 description: "A new Flutter package project."
 version: 0.0.1
+publish_to: none
 
 resolution: workspace
 
@@ -12,15 +13,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  get_it: ^8.2.0
-  injectable: ^2.5.1
-  bloc: ^9.0.0
+  router:
+    path: ../../core/router
+
+  get_it: 
+  injectable: 
+  bloc: 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  injectable_generator: ^2.8.1
-  build_runner: ^2.8.0
+  injectable_generator: 
+  build_runner: 
 
-  flutter_lints: ^5.0.0
+  flutter_lints: 

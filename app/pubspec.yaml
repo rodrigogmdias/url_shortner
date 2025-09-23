@@ -12,9 +12,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
-  get_it: ^8.2.0
-  injectable: ^2.5.1
+  cupertino_icons: 
+  get_it: 
+  injectable: 
+
+  router:
+    path: ../packages/core/router
 
   home:
     path: ../packages/features/home
@@ -23,7 +26,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  injectable_generator: ^2.8.1
-  build_runner: ^2.8.0
+  injectable_generator: 
+  build_runner: 
 
-  flutter_lints: ^5.0.0
+  flutter_lints:

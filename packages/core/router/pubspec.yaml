@@ -1,4 +1,4 @@
-name: design
+name: router
 description: "A new Flutter package project."
 version: 0.0.1
 
@@ -12,7 +12,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  get_it: 
+  injectable: 
+  go_router: 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  injectable_generator: 
+  build_runner: 
+
   flutter_lints:
