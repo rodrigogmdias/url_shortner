@@ -1,0 +1,22 @@
+name: url_shortener_workspace
+
+environment:
+  sdk: ^3.9.0
+
+workspace:
+  - app
+
+  - packages/core/design
+  - packages/core/network
+  
+  - packages/features/home
+
+dev_dependencies:
+  build_runner: ^2.4.6
+  melos: ^7.1.1
+
+melos:
+  command:
+    bootstrap:
+      hooks:
+        post: dart pub run build_runner build
