@@ -11,9 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^9.0.0
+
+  get_it: ^8.2.0
+  injectable: ^2.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  injectable_generator: ^2.8.1
+  build_runner: ^2.8.0
+
   flutter_lints: ^5.0.0
