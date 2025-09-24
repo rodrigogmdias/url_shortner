@@ -20,4 +20,9 @@ dev_dependencies:
 melos:
   scripts:
     generate:
+      description: Generate code for all workspace packages
       run: melos exec -c 1 --depends-on build_runner -- dart run build_runner build
+    test:
+      description: Run tests for all workspace packages
+      run: |
+        melos exec -c 1 --dir-exists=test --flutter -- flutter test
