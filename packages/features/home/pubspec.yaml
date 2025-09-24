@@ -15,6 +15,8 @@ dependencies:
 
   router:
     path: ../../core/router
+  design:
+    path: ../../core/design
 
   get_it: 
   injectable: 
