@@ -1,39 +1,55 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# create
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Feature responsável por encurtar URLs e persistir o resultado no storage em memória. Expõe `CreateWidget` e registra dependências via `injectable`.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Fluxo
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+1. Usuário digita uma URL no `DesignTextField`.
+2. Ao clicar em enviar (`DesignButton`), o `CreateCubit` chama `CreateUseCase`.
+3. O use case delega ao `CreateRepository` que simula (futuro: chama API) e persiste `ShortUrl` em `MemoryStorage` (lista `shortened_urls`).
+4. `History` feature recebe atualização via stream e lista item recém criado.
 
-## Features
+## Principais classes
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- `CreateWidget` — Componente de UI (campo + botão + estados de loading via BlocBuilder).
+- `CreateCubit` / `CreateState` — Gerencia estados: initial, loading, success, error.
+- `CreateUseCase` — Boundary de domínio para criação.
+- `CreateRepository` — Interage com storage (futuro: rede + cache).
+- `ShortUrl` — Modelo simples (originalUrl, shortUrl).
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Exemplo de uso direto
 
 ```dart
-const like = 'sample';
+CreateWidget(); // inserido em uma tela (ex: HomePage)
 ```
 
-## Additional information
+Reação ao sucesso/erro pode ser adicionada via `BlocListener` (já preparado no widget, faltando implementação de UI feedback).
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## Extensões futuras
+
+- Validação de URL (regex ou pacote `validators`).
+- Tratamento de erros de rede reais.
+- Feedback visual (SnackBar / Banner) no success/error.
+- Copiar automáticamente a URL encurtada.
+
+## Testes (a implementar)
+
+- Mock de `CreateUseCase` validando transições de estado.
+- Teste de integração adicionando item e verificando stream de histórico.
+
+## Desenvolvimento
+
+Gerar DI quando houver novas anotações:
+```
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Formatar:
+```
+dart format .
+```
+
+## Licença
+
+Uso interno no workspace.
+

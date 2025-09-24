@@ -1,39 +1,48 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# home
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Feature que compõe a tela inicial do app agregando `CreateWidget` (encurtar URL) e `HistoryWidget` (histórico). Também expõe rotas via `homeRoutes` para integração no roteador principal.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Rotas
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+`homeRoutes` fornece:
 
 ```dart
-const like = 'sample';
+AppRoute(path: '/', builder: (_, __) => const HomePage());
 ```
 
-## Additional information
+## Composição de UI
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+`HomePage`:
+- Campo + botão para encurtar (feature create).
+- Lista / estado vazio / loading (feature history).
+
+Estrutura simplificada:
+```dart
+Column(
+	children: [
+		CreateWidget(),
+		Expanded(child: HistoryWidget()),
+	],
+)
+```
+
+## Extensões futuras
+
+- AppBar com tema / branding.
+- Responsividade (layout adaptativo desktop/web).
+- Seções adicionais (analytics de cliques por URL, etc.).
+
+## Integração
+
+No app host (ex: `routes.dart`) agregue `homeRoutes` às demais rotas de features antes de criar o `AppRouter`.
+
+## Desenvolvimento
+
+```
+dart format .
+```
+
+## Licença
+
+Uso interno no workspace.
+

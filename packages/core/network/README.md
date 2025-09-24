@@ -1,39 +1,53 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# network
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Placeholder atual para a futura camada de rede (APIs do encurtador). No momento contém apenas código gerado de template.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Objetivos (planejado)
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- Configurar cliente HTTP (provavelmente `dio`).
+- Interceptores (logging, headers, auth futura se necessário).
+- Serialização (possível adoção de `json_serializable`).
+- Abstrações de repositórios compartilhadas entre features.
 
-## Features
+## Estado Atual
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Ainda não implementado. `Calculator` é apenas artefato padrão de criação de pacote.
 
-## Getting started
+## Roadmap sugerido
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+1. Adicionar dependência `dio`.
+2. Criar `NetworkClient` central com configuração baseUrl.
+3. Implementar interceptores (log e timeout).
+4. Adaptar features (`create`, `history`) para consumir endpoints reais.
+5. Cobrir com testes de integração usando mocks (`http_mock_adapter` ou similar).
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Exemplo Futuro (esboço)
 
 ```dart
-const like = 'sample';
+final dio = Dio(BaseOptions(baseUrl: env.apiBaseUrl));
+dio.interceptors.add(LogInterceptor());
+
+@singleton
+class ShortUrlApi {
+	ShortUrlApi(this._dio);
+	final Dio _dio;
+
+	Future<ShortUrlDto> create(String url) async {
+		final res = await _dio.post('/shorten', data: {'url': url});
+		return ShortUrlDto.fromJson(res.data as Map<String, dynamic>);
+	}
+}
 ```
 
-## Additional information
+## Desenvolvimento
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Formatar / fixes:
+```
+dart format .
+dart fix --apply
+```
+
+## Licença
+
+Uso interno no workspace.
+

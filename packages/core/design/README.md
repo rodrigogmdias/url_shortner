@@ -1,39 +1,63 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# design
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Design System mínimo para o monorepo: componentes reutilizáveis de UI (botão, texto, text field, list item e estados vazios) com estilos simples para prototipagem rápida.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Objetivos
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- Padronizar tipografia e espaçamentos básicos.
+- Reutilização de widgets comuns evitando duplicação.
+- Facilitar evolução incremental (tema mais elaborado, dark mode, etc.).
 
-## Features
+## Componentes Exportados
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- `DesignButton` — Botão ícone + loading state.
+- `DesignText` + `DesignTextType` — Tipografia (h1, h2, h3, body, caption).
+- `DesignTextField` — Campo de texto com label (adaptado para uso de URL no create).
+- `DesignListItem` — Item de lista com título, subtítulo e ação opcional.
+- `DesignEmpty` — Placeholder para estados vazios.
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Uso rápido
 
 ```dart
-const like = 'sample';
+import 'package:design/design.dart';
+
+Widget build(BuildContext context) {
+	return Column(
+		crossAxisAlignment: CrossAxisAlignment.start,
+		children: const [
+			DesignText('Título', type: DesignTextType.h2),
+			SizedBox(height: 16),
+			DesignButton(icon: Icons.send, onPressed: null),
+		],
+	);
+}
 ```
 
-## Additional information
+## Tipografia
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+| Tipo | Tamanho | Peso |
+|------|---------|------|
+| h1 | 32 | bold |
+| h2 | 24 | bold |
+| h3 | 18 | bold |
+| body | 14 | normal |
+| caption | 12 | w400 |
+
+## Extensões Futuras
+
+- Suporte a theming dinâmico.
+- Tokens (cores, radius, spacing) centralizados.
+- Acessibilidade (larger fonts / contrast).
+
+## Desenvolvimento
+
+Formatar / fixes:
+```
+dart format .
+dart fix --apply
+```
+
+## Licença
+
+Uso interno no workspace.
+

@@ -1,39 +1,58 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# history
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Feature que observa e exibe o histórico de URLs encurtadas. Atualiza em tempo quase real ao escutar a lista `'shortened_urls'` do `MemoryStorage`.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Fluxo
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+1. `HistoryWidget` inicia e chama `HistoryCubit.load()`.
+2. Cubit emite `HistoryLoading` e assina a stream de `LoadHistoryUseCase`.
+3. Use case delega a `HistoryRepository.watchAll()` que retorna `watchList` invertido (mais recente primeiro).
+4. Ao receber dados: estado `HistoryLoaded` com lista.
 
-## Features
+## Principais classes
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- `HistoryWidget` — Renderiza título + lista ou estado vazio / loading.
+- `HistoryCubit` / `HistoryState` — Estados: initial, loading, loaded.
+- `LoadHistoryUseCase` — Boundary de domínio para observar histórico.
+- `HistoryRepository` — Adapta storage para stream tipada de `ShortUrl`.
+- `ShortUrl` — Mesmo modelo da feature `create` (com `fromJson`).
 
-## Getting started
+## UI States
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Loading: lista de placeholders.
+- Empty: widget `DesignEmpty` com ícone e mensagem.
+- Loaded: `ListView.separated` de `DesignListItem`.
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Exemplo de uso
 
 ```dart
-const like = 'sample';
+HistoryWidget(); // normalmente dentro da HomePage
 ```
 
-## Additional information
+## Extensões futuras
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- Ação de copiar URL curta (`Clipboard.setData`).
+- Paginação / limite máximo de itens armazenados.
+- Filtro / busca.
+
+## Testes sugeridos
+
+- Mock do repositório emitindo listas vazia e não vazia.
+- Verificar transições de estado e renderização condicional.
+
+## Desenvolvimento
+
+Gerar DI (quando houver mudanças de anotação):
+```
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Formatar:
+```
+dart format .
+```
+
+## Licença
+
+Uso interno no workspace.
+

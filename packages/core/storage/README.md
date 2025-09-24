@@ -1,39 +1,56 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# storage
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Armazenamento simples em memória reativo utilizado para prototipar histórico de URLs encurtadas. Fornece operações de chave/valor, listas serializadas em JSON e observação reativa de mudanças.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Principais APIs (`MemoryStorage`)
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- `save(key, value)` — salva string.
+- `delete(key)` — remove chave.
+- `watch(key)` — stream de mudanças (inclui valor inicial).
+- `addToList(key, value)` — adiciona elemento serializado a uma lista JSON persistida em string.
+- `getList(key, fromJson)` — retorna lista desserializada.
+- `watchList(key, fromJson)` — stream reativa da lista inteira.
+- `clearList(key)` — limpa lista.
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Exemplo
 
 ```dart
-const like = 'sample';
+final storage = MemoryStorage();
+await storage.save('foo', 'bar');
+
+storage.watch('foo').listen((value) {
+	// reage a mudanças
+});
+
+await storage.addToList('items', {'id': 1});
+final items = await storage.getList('items', (json) => json as Map<String, dynamic>);
 ```
 
-## Additional information
+## Uso em Features
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- `create` adiciona `ShortUrl` em `'shortened_urls'` via `addToList`.
+- `history` observa `watchList('shortened_urls')` para renderizar atualizações em tempo quase real.
+
+## Limitações
+
+- Não persistente (tudo é perdido ao reiniciar o app).
+- Operações com listas desnormalizadas (re-escreve array inteiro a cada inclusão).
+- Sem locking / concorrência segura para múltiplos isolates.
+
+## Evolução Sugerida
+
+- Substituir por Hive, Isar ou implementação abstraída via interface.
+- Introduzir TTL / expiração para histórico.
+- Migração para storage criptografado quando houver sensibilidade de dados.
+
+## Desenvolvimento
+
+```
+dart format .
+dart fix --apply
+```
+
+## Licença
+
+Uso interno no workspace.
+
