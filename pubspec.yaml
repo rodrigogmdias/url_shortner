@@ -9,8 +9,11 @@ workspace:
   - packages/core/design
   - packages/core/network
   - packages/core/router
+  - packages/core/storage
   
   - packages/features/home
+  - packages/features/create
+  - packages/features/history
 
 dev_dependencies:
   melos: ^7.1.1

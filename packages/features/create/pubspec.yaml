@@ -1,4 +1,4 @@
-name: home
+name: create
 description: "A new Flutter package project."
 version: 0.0.1
 publish_to: none
@@ -13,15 +13,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  router:
-    path: ../../core/router
+  storage:
+    path: ../../core/storage
+
   design:
     path: ../../core/design
-
-  create:
-    path: ../create
-  history:
-    path: ../history
 
   get_it: 
   injectable: 

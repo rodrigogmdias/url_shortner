@@ -18,9 +18,15 @@ dependencies:
 
   router:
     path: ../packages/core/router
+  storage:
+    path: ../packages/core/storage
 
   home:
     path: ../packages/features/home
+  create:
+    path: ../packages/features/create
+  history:
+    path: ../packages/features/history
 
 dev_dependencies:
   flutter_test:
