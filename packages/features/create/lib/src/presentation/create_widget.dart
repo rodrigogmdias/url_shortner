@@ -21,7 +21,16 @@ class _CreateWidgetState extends State<CreateWidget> {
       create: (context) => _cubit,
       child: BlocListener<CreateCubit, CreateState>(
         listener: (context, state) {
-          // TODO: implement listener to error and success states
+          if (state is CreateSuccess) {
+            DesignToast.success(context, 'URL encurtada com sucesso!');
+          } else if (state is CreateError) {
+            DesignToast.error(
+              context,
+              state.message.isNotEmpty
+                  ? state.message
+                  : 'Ocorreu um erro ao encurtar a URL',
+            );
+          }
         },
         child: BlocBuilder<CreateCubit, CreateState>(
           builder: (context, state) {

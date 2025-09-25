@@ -15,6 +15,7 @@ Design System mínimo para o monorepo: componentes reutilizáveis de UI (botão,
 - `DesignTextField` — Campo de texto com label (adaptado para uso de URL no create).
 - `DesignListItem` — Item de lista com título, subtítulo e ação opcional.
 - `DesignEmpty` — Placeholder para estados vazios.
+- `DesignToast` — Toast/SnackBar flutuante com variantes de sucesso, alerta e erro.
 
 ## Uso rápido
 
@@ -31,6 +32,30 @@ Widget build(BuildContext context) {
 		],
 	);
 }
+```
+
+### Toasts
+
+Exibir mensagens rápidas:
+
+```dart
+// Sucesso
+DesignToast.success(context, 'URL encurtada com sucesso!');
+
+// Alerta
+DesignToast.warning(context, 'Verifique a URL informada.');
+
+// Erro
+DesignToast.error(context, 'Falha ao encurtar a URL.');
+
+// Com ação
+DesignToast.show(
+  context,
+  message: 'Link copiado',
+  type: DesignToastType.success,
+  actionLabel: 'Desfazer',
+  onAction: () { /* ... */ },
+);
 ```
 
 ## Tipografia
