@@ -57,19 +57,6 @@ class DesignListItem extends StatelessWidget {
   }
 
   Widget _buildSkeleton(BuildContext context) {
-    final Color base = Theme.of(
-      context,
-    ).colorScheme.onSurface.withValues(alpha: 0.08);
-
-    Widget line(double width, double height) => Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: base,
-        borderRadius: BorderRadius.circular(6),
-      ),
-    );
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final double maxW = constraints.maxWidth.isFinite
@@ -86,9 +73,9 @@ class DesignListItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                line(titleW, 16),
+                DesignSkeleton(width: titleW, height: 16),
                 const SizedBox(height: 8),
-                line(subtitleW, 12),
+                DesignSkeleton(width: subtitleW, height: 12),
               ],
             ),
           ],
