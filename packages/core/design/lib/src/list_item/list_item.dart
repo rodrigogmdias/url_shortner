@@ -31,11 +31,20 @@ class DesignListItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (title != null) DesignText(title!, type: DesignTextType.body),
+              if (title != null)
+                DesignText(
+                  title!,
+                  type: DesignTextType.body,
+                  overflow: TextOverflow.ellipsis,
+                ),
               if (title != null && subtitle != null)
                 const SizedBox(height: 4.0),
               if (subtitle != null)
-                DesignText(subtitle!, type: DesignTextType.caption),
+                DesignText(
+                  subtitle!,
+                  type: DesignTextType.caption,
+                  overflow: TextOverflow.ellipsis,
+                ),
             ],
           ),
         ),
