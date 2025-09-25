@@ -13,17 +13,14 @@ import 'package:network/src/environment.dart' as _i40;
 import 'package:network/src/network_service.dart' as _i431;
 
 class NetworkPackageModule extends _i526.MicroPackageModule {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     gh.lazySingleton<_i246.DioProvider>(
-      () => _i246.DioProviderImpl(gh<_i372.NetworkEnvironment>()),
-    );
-    gh.lazySingleton<_i431.NetworkService>(
-      () => _i431.NetworkServiceImpl(
-        gh<_i40.NetworkEnvironment>(),
-        gh<_i246.DioProvider>(),
-      ),
-    );
+        () => _i246.DioProviderImpl(gh<_i372.NetworkEnvironment>()));
+    gh.lazySingleton<_i431.NetworkService>(() => _i431.NetworkServiceImpl(
+          gh<_i40.NetworkEnvironment>(),
+          gh<_i246.DioProvider>(),
+        ));
   }
 }

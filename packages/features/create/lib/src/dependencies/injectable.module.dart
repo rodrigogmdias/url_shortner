@@ -14,20 +14,16 @@ import 'package:network/network.dart' as _i372;
 import 'package:storage/storage.dart' as _i431;
 
 class CreatePackageModule extends _i526.MicroPackageModule {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
-    gh.factory<_i699.CreateRepository>(
-      () => _i699.CreateRepositoryImpl(
-        gh<_i431.MemoryStorage>(),
-        gh<_i372.NetworkService>(),
-      ),
-    );
+    gh.factory<_i699.CreateRepository>(() => _i699.CreateRepositoryImpl(
+          gh<_i431.MemoryStorage>(),
+          gh<_i372.NetworkService>(),
+        ));
     gh.factory<_i851.CreateUseCase>(
-      () => _i851.RegisterUseCaseImpl(gh<_i699.CreateRepository>()),
-    );
+        () => _i851.RegisterUseCaseImpl(gh<_i699.CreateRepository>()));
     gh.factory<_i966.CreateCubit>(
-      () => _i966.CreateCubit(gh<_i851.CreateUseCase>()),
-    );
+        () => _i966.CreateCubit(gh<_i851.CreateUseCase>()));
   }
 }
