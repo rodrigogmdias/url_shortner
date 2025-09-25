@@ -9,7 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:app/enviroument/network_environment.dart' as _i404;
+import 'package:app/environment/network_environment.dart' as _i404;
 import 'package:create/create.dart' as _i104;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:history/history.dart' as _i569;
@@ -27,7 +27,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.lazySingleton<_i372.NetworkEnvironment>(
-      () => _i404.NetworkEnviroumentImpl(),
+      () => _i404.NetworkEnvironmentImpl(),
     );
     await _i794.RouterPackageModule().init(gh);
     await _i372.NetworkPackageModule().init(gh);
