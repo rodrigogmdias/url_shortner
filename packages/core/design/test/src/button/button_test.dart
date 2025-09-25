@@ -22,7 +22,6 @@ void main() {
     testWidgets('renders spacing only when both icon and label are provided', (
       tester,
     ) async {
-      // Both icon and label -> one SizedBox of width 4
       await tester.pumpApp(
         const DesignButton(labelText: 'Go', icon: Icons.link),
       );
@@ -34,7 +33,6 @@ void main() {
       final sizedBoxesBoth = tester.widgetList<SizedBox>(withBothFinder);
       expect(sizedBoxesBoth.where((w) => w.width == 4).length, 1);
 
-      // Only label -> no SizedBox of width 4
       await tester.pumpApp(const DesignButton(labelText: 'OnlyLabel'));
       final withLabelOnlyFinder = find.descendant(
         of: find.byType(OutlinedButton),
@@ -45,7 +43,6 @@ void main() {
       );
       expect(sizedBoxesLabelOnly.where((w) => w.width == 4).isEmpty, isTrue);
 
-      // Only icon -> no SizedBox of width 4
       await tester.pumpApp(const DesignButton(icon: Icons.link));
       final withIconOnlyFinder = find.descendant(
         of: find.byType(OutlinedButton),
@@ -73,7 +70,7 @@ void main() {
       await tester.pumpApp(const DesignButton(labelText: 'Disabled'));
 
       final button = tester.widget<OutlinedButton>(find.byType(OutlinedButton));
-      // onPressed is null when disabled
+
       expect(button.onPressed, isNull);
     });
 
@@ -90,30 +87,24 @@ void main() {
         ),
       );
 
-      // Button should be disabled when loading
       final button = tester.widget<OutlinedButton>(find.byType(OutlinedButton));
       expect(button.onPressed, isNull);
 
-      // Should show progress indicator
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      // Should NOT show icon or label while loading
       expect(find.byIcon(Icons.add), findsNothing);
       expect(find.text('Tap'), findsNothing);
 
-      // Taps should not invoke callback while disabled
       await tester.tap(find.byType(OutlinedButton));
       await tester.pump();
       expect(tapped, 0);
     });
 
     testWidgets('toggles content when loading changes', (tester) async {
-      // Not loading initially -> shows label
       await tester.pumpApp(DesignButton(labelText: 'Submit', onPressed: () {}));
       expect(find.text('Submit'), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
-      // Rebuild in loading state -> hides label, shows spinner
       await tester.pumpApp(
         const DesignButton(labelText: 'Submit', loading: true),
       );
