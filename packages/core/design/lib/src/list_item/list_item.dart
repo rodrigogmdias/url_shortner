@@ -10,8 +10,6 @@ class DesignListItem extends StatelessWidget {
     this.buttonOnPressed,
     this.loading = false,
   });
-
-  // Title and subtitle are optional to allow usage when loading skeleton is shown.
   final String? title;
   final String? subtitle;
   final IconData? buttonIcon;

@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// Types for Design Toast messages.
 enum DesignToastType { success, warning, error }
 
-/// A lightweight toast helper built on top of SnackBar.
-///
-/// Shows a floating, rounded SnackBar with proper colors/icons
-/// for success, warning and error messages.
 class DesignToast {
   const DesignToast._();
 
-  /// Shows a toast with a [message] and [type].
-  ///
-  /// Optional [duration] (default: 3s). You can also provide an
-  /// [actionLabel] and [onAction] to render a CTA on the right.
   static void show(
     BuildContext context, {
     required String message,
@@ -67,7 +58,6 @@ class DesignToast {
     messenger.showSnackBar(snackBar);
   }
 
-  /// Convenience helpers
   static void success(
     BuildContext context,
     String message, {

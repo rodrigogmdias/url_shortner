@@ -2,17 +2,15 @@ import 'package:design/src/list_item/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../test_utils.dart';
+
 void main() {
   group('DesignListItem', () {
     testWidgets('renders title and subtitle with expected styles', (
       tester,
     ) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DesignListItem(title: 'My Title', subtitle: 'My Subtitle'),
-          ),
-        ),
+      await tester.pumpApp(
+        const DesignListItem(title: 'My Title', subtitle: 'My Subtitle'),
       );
 
       final titleText = tester.widget<Text>(find.text('My Title'));
@@ -30,15 +28,8 @@ void main() {
     testWidgets('does not render button when buttonIcon is null', (
       tester,
     ) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DesignListItem(
-              title: 'No Button',
-              subtitle: 'No Icon Provided',
-            ),
-          ),
-        ),
+      await tester.pumpApp(
+        const DesignListItem(title: 'No Button', subtitle: 'No Icon Provided'),
       );
 
       // No icon should be found because no buttonIcon was provided.
@@ -50,18 +41,14 @@ void main() {
     ) async {
       var pressed = false;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DesignListItem(
-              title: 'With Button',
-              subtitle: 'Has Icon',
-              buttonIcon: Icons.add,
-              buttonOnPressed: () {
-                pressed = true;
-              },
-            ),
-          ),
+      await tester.pumpApp(
+        DesignListItem(
+          title: 'With Button',
+          subtitle: 'Has Icon',
+          buttonIcon: Icons.add,
+          buttonOnPressed: () {
+            pressed = true;
+          },
         ),
       );
 

@@ -14,7 +14,6 @@ class DesignButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData? icon;
   final bool background;
-  // When true, show a small progress indicator and disable the button.
   final bool loading;
 
   @override

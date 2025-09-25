@@ -2,6 +2,8 @@ import 'package:design/src/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../test_utils.dart';
+
 void main() {
   group('DesignTextField', () {
     testWidgets('renders with provided label', (tester) async {
@@ -10,12 +12,8 @@ void main() {
       addTearDown(controller.dispose);
 
       // Act
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DesignTextField(labelText: 'URL', urlController: controller),
-          ),
-        ),
+      await tester.pumpApp(
+        DesignTextField(labelText: 'URL', urlController: controller),
       );
 
       // Assert
@@ -28,12 +26,8 @@ void main() {
       final controller = TextEditingController();
       addTearDown(controller.dispose);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DesignTextField(labelText: 'URL', urlController: controller),
-          ),
-        ),
+      await tester.pumpApp(
+        DesignTextField(labelText: 'URL', urlController: controller),
       );
 
       // Act
@@ -50,12 +44,8 @@ void main() {
       final controller = TextEditingController(text: 'prefilled');
       addTearDown(controller.dispose);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DesignTextField(labelText: 'URL', urlController: controller),
-          ),
-        ),
+      await tester.pumpApp(
+        DesignTextField(labelText: 'URL', urlController: controller),
       );
 
       // Assert
@@ -69,12 +59,8 @@ void main() {
       final controller = TextEditingController();
       addTearDown(controller.dispose);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DesignTextField(labelText: 'URL', urlController: controller),
-          ),
-        ),
+      await tester.pumpApp(
+        DesignTextField(labelText: 'URL', urlController: controller),
       );
 
       // Act

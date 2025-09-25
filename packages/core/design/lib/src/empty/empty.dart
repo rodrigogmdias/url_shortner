@@ -1,10 +1,6 @@
 import 'package:design/design.dart';
 import 'package:flutter/material.dart';
 
-/// A simple empty state widget for list screens.
-///
-/// Displays an optional [icon], a required [title], an optional [description]
-/// and an optional action button defined by [actionLabel] and [onAction].
 class DesignEmpty extends StatelessWidget {
   const DesignEmpty({
     super.key,
@@ -15,23 +11,11 @@ class DesignEmpty extends StatelessWidget {
     this.onAction,
     this.padding = const EdgeInsets.all(24),
   });
-
-  /// The main title text.
   final String title;
-
-  /// An optional supporting description below the title.
   final String? description;
-
-  /// Optional icon to illustrate the empty state.
   final IconData? icon;
-
-  /// Optional action button label. If provided, an action button is rendered.
   final String? actionLabel;
-
-  /// Callback for the optional action button. If null, the button is disabled.
   final VoidCallback? onAction;
-
-  /// Outer padding for the whole empty state.
   final EdgeInsets padding;
 
   @override
