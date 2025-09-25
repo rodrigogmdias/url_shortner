@@ -6,6 +6,48 @@ import '../../test_utils.dart';
 
 void main() {
   group('DesignToast', () {
+    testWidgets('success() convenience method shows success toast', (
+      tester,
+    ) async {
+      await tester.pumpApp(const SizedBox());
+      final context = tester.element(find.byType(Scaffold));
+
+      DesignToast.success(
+        context,
+        'All good',
+        duration: const Duration(days: 1),
+      );
+      await tester.pump();
+
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(find.text('All good'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+
+      final bar = tester.widget<SnackBar>(find.byType(SnackBar));
+      expect(bar.backgroundColor, Colors.green.shade600);
+      expect(bar.duration, const Duration(days: 1));
+    });
+
+    testWidgets('warning() convenience method shows warning toast', (
+      tester,
+    ) async {
+      await tester.pumpApp(const SizedBox());
+      final context = tester.element(find.byType(Scaffold));
+
+      DesignToast.warning(
+        context,
+        'Be careful',
+        duration: const Duration(days: 1),
+      );
+      await tester.pump();
+
+      expect(find.text('Be careful'), findsOneWidget);
+      expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+
+      final bar = tester.widget<SnackBar>(find.byType(SnackBar));
+      expect(bar.backgroundColor, Colors.orange.shade700);
+      expect(bar.duration, const Duration(days: 1));
+    });
     testWidgets('shows success toast with correct styling', (tester) async {
       await tester.pumpApp(const SizedBox());
       final context = tester.element(find.byType(Scaffold));
