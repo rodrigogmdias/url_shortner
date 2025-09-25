@@ -27,14 +27,17 @@ class DesignListItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (title != null) DesignText(title!, type: DesignTextType.body),
-            if (title != null && subtitle != null) const SizedBox(height: 4.0),
-            if (subtitle != null)
-              DesignText(subtitle!, type: DesignTextType.caption),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (title != null) DesignText(title!, type: DesignTextType.body),
+              if (title != null && subtitle != null)
+                const SizedBox(height: 4.0),
+              if (subtitle != null)
+                DesignText(subtitle!, type: DesignTextType.caption),
+            ],
+          ),
         ),
         if (buttonIcon != null)
           DesignButton(
