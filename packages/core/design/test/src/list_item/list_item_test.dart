@@ -16,11 +16,9 @@ void main() {
       final titleText = tester.widget<Text>(find.text('My Title'));
       final subtitleText = tester.widget<Text>(find.text('My Subtitle'));
 
-      // Title uses body style (14, normal).
       expect(titleText.style?.fontSize, 14);
       expect(titleText.style?.fontWeight, FontWeight.normal);
 
-      // Subtitle uses caption style (12, w400).
       expect(subtitleText.style?.fontSize, 12);
       expect(subtitleText.style?.fontWeight, FontWeight.w400);
     });
@@ -32,7 +30,6 @@ void main() {
         const DesignListItem(title: 'No Button', subtitle: 'No Icon Provided'),
       );
 
-      // No icon should be found because no buttonIcon was provided.
       expect(find.byType(Icon), findsNothing);
     });
 
