@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class MemoryStorage {
   final Map<String, String> _storage = {};
   final StreamController<String> _changes =

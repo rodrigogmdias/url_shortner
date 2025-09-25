@@ -59,7 +59,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
                     itemBuilder: (context, index) {
                       return DesignListItem(
                         title: state.urls[index].originalUrl,
-                        subtitle: 'https://short.url/$index',
+                        subtitle: state.urls[index].alias,
                         buttonIcon: Icons.copy,
                         buttonOnPressed: () {},
                       );

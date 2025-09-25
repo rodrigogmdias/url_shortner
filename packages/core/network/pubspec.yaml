@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  dio:
   get_it: 
   injectable: 
   go_router: 

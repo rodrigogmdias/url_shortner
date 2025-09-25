@@ -13,6 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  network:
+    path: ../../core/network
   storage:
     path: ../../core/storage
 

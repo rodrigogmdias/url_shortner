@@ -10,10 +10,10 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:storage/src/memory_storage.dart' as _i503;
 
 class StoragePackageModule extends _i526.MicroPackageModule {
-// initializes the registration of main-scope dependencies inside of GetIt
+  // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
-    gh.singleton<_i503.MemoryStorage>(
+    gh.lazySingleton<_i503.MemoryStorage>(
       () => _i503.MemoryStorage(),
       dispose: (i) => i.dispose(),
     );

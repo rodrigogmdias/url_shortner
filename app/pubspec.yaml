@@ -20,6 +20,8 @@ dependencies:
     path: ../packages/core/router
   storage:
     path: ../packages/core/storage
+  network:
+    path: ../packages/core/network
 
   home:
     path: ../packages/features/home

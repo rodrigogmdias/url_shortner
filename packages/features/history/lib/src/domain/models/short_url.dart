@@ -1,17 +1,17 @@
 class ShortUrl {
   final String originalUrl;
-  final String shortUrl;
+  final String alias;
 
-  ShortUrl({required this.originalUrl, required this.shortUrl});
+  ShortUrl({required this.originalUrl, required this.alias});
 
   factory ShortUrl.fromJson(Map<String, dynamic> json) {
     return ShortUrl(
       originalUrl: json['originalUrl'] as String,
-      shortUrl: json['shortUrl'] as String,
+      alias: json['alias'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'originalUrl': originalUrl, 'shortUrl': shortUrl};
+    return {'originalUrl': originalUrl, 'alias': alias};
   }
 }

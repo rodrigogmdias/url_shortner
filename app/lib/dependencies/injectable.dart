@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:history/history.dart';
 import 'package:home/home.dart';
 import 'package:injectable/injectable.dart';
+import 'package:network/network.dart';
 import 'package:router/router.dart';
 import 'package:storage/storage.dart';
 
@@ -11,8 +12,9 @@ import 'injectable.config.dart';
 final getIt = GetIt.instance;
 
 @InjectableInit(
-  externalPackageModulesBefore: [
+  externalPackageModulesAfter: [
     ExternalModule(RouterPackageModule),
+    ExternalModule(NetworkPackageModule),
     ExternalModule(StoragePackageModule),
     ExternalModule(CreatePackageModule),
     ExternalModule(HistoryPackageModule),
