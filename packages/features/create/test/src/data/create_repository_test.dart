@@ -1,7 +1,6 @@
 import 'package:create/src/data/create_repository.dart';
 import 'package:create/src/data/models/create_response.dart';
 import 'package:create/src/domain/models/short_url.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -54,11 +53,6 @@ void main() {
           data: decoded,
           statusCode: 201,
           headers: const <String, List<String>>{},
-          original: Response(
-            data: raw,
-            statusCode: 201,
-            requestOptions: RequestOptions(path: '/api/alias'),
-          ),
         );
       });
 

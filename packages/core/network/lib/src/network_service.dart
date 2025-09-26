@@ -66,7 +66,6 @@ class NetworkServiceImpl implements NetworkService {
         headers: response.headers.map.map(
           (key, value) => MapEntry(key, List<String>.from(value)),
         ),
-        original: response,
       );
     } on TypeError catch (e) {
       throw NetworkParsingError(endpoint.path, message: e.toString());

@@ -156,7 +156,7 @@ try {
 }
 ```
 
-`NetworkResponse<T>` also exposes the original Dio `Response` via `original` for advanced scenarios.
+`NetworkResponse<T>` exposes status code, headers e dados decodificados; o Response original do Dio não é mais exposto.
 
 ## Customizing Dio
 
