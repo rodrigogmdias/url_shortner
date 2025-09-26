@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:history/history.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, Widget? create, Widget? history})
+    : createWidget = create ?? const CreateWidget(),
+      historyWidget = history ?? const HistoryWidget();
+
+  final Widget createWidget;
+  final Widget historyWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +19,9 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CreateWidget(),
+              createWidget,
               const SizedBox(height: 24.0),
-              Expanded(child: HistoryWidget()),
+              Expanded(child: historyWidget),
             ],
           ),
         ),
