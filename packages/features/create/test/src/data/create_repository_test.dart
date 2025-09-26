@@ -8,17 +8,17 @@ import 'package:mockito/mockito.dart';
 import 'package:network/network.dart';
 import 'package:storage/storage.dart';
 
-@GenerateNiceMocks([MockSpec<NetworkService>()])
+@GenerateNiceMocks([MockSpec<NetworkService>(), MockSpec<MemoryStorage>()])
 import 'create_repository_test.mocks.dart';
 
 void main() {
   late MockNetworkService networkService;
-  late MemoryStorage storage;
+  late MockMemoryStorage storage;
   late CreateRepository repository;
 
   setUp(() {
     networkService = MockNetworkService();
-    storage = MemoryStorage();
+    storage = MockMemoryStorage();
     repository = CreateRepositoryImpl(storage, networkService);
   });
 
@@ -32,8 +32,6 @@ void main() {
         alias: alias,
         links: Links(self: originalUrl, short: 'https://sho.rt/$alias'),
       );
-
-      // responseModel permanece para fallback caso o decoder não seja passado
 
       when(
         networkService.send<CreateResponse>(
@@ -80,13 +78,17 @@ void main() {
         ),
       );
 
-      final savedList = await storage.getList<ShortUrl>(
-        'shortened_urls',
-        (json) => ShortUrl.fromJson(json as Map<String, dynamic>),
-      );
-      expect(savedList, hasLength(1));
-      expect(savedList.first.alias, alias);
-      expect(savedList.first.originalUrl, originalUrl);
+      verify(
+        storage.addToList<ShortUrl>(
+          'shortened_urls',
+          argThat(
+            isA<ShortUrl>()
+                .having((s) => s.alias, 'alias', alias)
+                .having((s) => s.originalUrl, 'originalUrl', originalUrl),
+          ),
+          toEncodable: anyNamed('toEncodable'),
+        ),
+      ).called(1);
     });
 
     test(
@@ -115,11 +117,13 @@ void main() {
           ),
         );
 
-        final savedList = await storage.getList<ShortUrl>(
-          'shortened_urls',
-          (json) => ShortUrl.fromJson(json as Map<String, dynamic>),
+        verifyNever(
+          storage.addToList<ShortUrl>(
+            any,
+            any,
+            toEncodable: anyNamed('toEncodable'),
+          ),
         );
-        expect(savedList, isEmpty);
       },
     );
 
@@ -147,11 +151,13 @@ void main() {
         ),
       );
 
-      final savedList = await storage.getList<ShortUrl>(
-        'shortened_urls',
-        (json) => ShortUrl.fromJson(json as Map<String, dynamic>),
+      verifyNever(
+        storage.addToList<ShortUrl>(
+          any,
+          any,
+          toEncodable: anyNamed('toEncodable'),
+        ),
       );
-      expect(savedList, isEmpty);
     });
   });
 }

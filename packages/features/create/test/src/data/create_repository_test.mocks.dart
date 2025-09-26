@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:network/src/endpoint.dart' as _i5;
 import 'package:network/src/network_response.dart' as _i2;
 import 'package:network/src/network_service.dart' as _i3;
+import 'package:storage/src/memory_storage.dart' as _i7;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -86,4 +87,100 @@ class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
             ),
           )
           as _i4.Future<_i2.NetworkResponse<T>>);
+}
+
+/// A class which mocks [MemoryStorage].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMemoryStorage extends _i1.Mock implements _i7.MemoryStorage {
+  @override
+  _i4.Future<void> save(String? key, String? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#save, [key, value]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Stream<String?> watch(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#watch, [key]),
+            returnValue: _i4.Stream<String?>.empty(),
+            returnValueForMissingStub: _i4.Stream<String?>.empty(),
+          )
+          as _i4.Stream<String?>);
+
+  @override
+  _i4.Future<void> delete(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#delete, [key]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<List<String>> getAllKeys() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllKeys, []),
+            returnValue: _i4.Future<List<String>>.value(<String>[]),
+            returnValueForMissingStub: _i4.Future<List<String>>.value(
+              <String>[],
+            ),
+          )
+          as _i4.Future<List<String>>);
+
+  @override
+  _i4.Future<void> addToList<T>(
+    String? key,
+    T? value, {
+    Object? Function(T)? toEncodable,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #addToList,
+              [key, value],
+              {#toEncodable: toEncodable},
+            ),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<List<T>> getList<T>(String? key, T Function(Object?)? fromJson) =>
+      (super.noSuchMethod(
+            Invocation.method(#getList, [key, fromJson]),
+            returnValue: _i4.Future<List<T>>.value(<T>[]),
+            returnValueForMissingStub: _i4.Future<List<T>>.value(<T>[]),
+          )
+          as _i4.Future<List<T>>);
+
+  @override
+  _i4.Stream<List<T>> watchList<T>(
+    String? key,
+    T Function(Object?)? fromJson,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#watchList, [key, fromJson]),
+            returnValue: _i4.Stream<List<T>>.empty(),
+            returnValueForMissingStub: _i4.Stream<List<T>>.empty(),
+          )
+          as _i4.Stream<List<T>>);
+
+  @override
+  _i4.Future<void> clearList(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#clearList, [key]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
 }
