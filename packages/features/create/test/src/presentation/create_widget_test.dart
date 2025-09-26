@@ -9,10 +9,9 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../test_utils.dart';
 @GenerateNiceMocks([MockSpec<CreateCubit>()])
 import 'create_widget_test.mocks.dart';
-
-Widget _wrap(Widget child) => MaterialApp(home: Scaffold(body: child));
 
 void main() {
   late MockCreateCubit cubit;
@@ -39,7 +38,7 @@ void main() {
   });
 
   testWidgets('renders text field and button', (tester) async {
-    await tester.pumpWidget(_wrap(const CreateWidget()));
+    await tester.pumpApp(const CreateWidget());
     expect(find.byType(TextField), findsOneWidget);
     expect(find.byType(OutlinedButton), findsOneWidget);
   });
@@ -47,7 +46,7 @@ void main() {
   testWidgets('taps button calls cubit.create with current text', (
     tester,
   ) async {
-    await tester.pumpWidget(_wrap(const CreateWidget()));
+    await tester.pumpApp(const CreateWidget());
     const url = 'https://example.com/x';
     await tester.enterText(find.byType(TextField), url);
     await tester.tap(find.byType(OutlinedButton));
@@ -56,14 +55,14 @@ void main() {
   });
 
   testWidgets('shows loading state while creating', (tester) async {
-    await tester.pumpWidget(_wrap(const CreateWidget()));
+    await tester.pumpApp(const CreateWidget());
     controller.add(CreateLoading());
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 
   testWidgets('shows success toast on CreateSuccess', (tester) async {
-    await tester.pumpWidget(_wrap(const CreateWidget()));
+    await tester.pumpApp(const CreateWidget());
     final model = ShortUrl(originalUrl: 'u', alias: 'a');
     controller.add(CreateSuccess(model));
     await tester.pumpAndSettle();
@@ -71,7 +70,7 @@ void main() {
   });
 
   testWidgets('shows error toast on CreateError', (tester) async {
-    await tester.pumpWidget(_wrap(const CreateWidget()));
+    await tester.pumpApp(const CreateWidget());
     controller.add(CreateError('custom error'));
     await tester.pump();
     expect(find.text('custom error'), findsOneWidget);
