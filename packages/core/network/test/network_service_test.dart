@@ -92,7 +92,6 @@ void main() {
       expect(result.data, {'ok': true});
       expect(result.statusCode, 200);
       expect(result.isSuccess, isTrue);
-      // original Response was removed from NetworkResponse API
 
       final captured = verify(
         dio.request<dynamic>(

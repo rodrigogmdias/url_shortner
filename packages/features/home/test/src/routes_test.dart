@@ -4,8 +4,6 @@ import 'package:home/src/presentation/home_page.dart';
 import 'package:home/src/routes.dart';
 import 'package:router/router.dart';
 
-// No DI fakes needed; we'll inject stub widgets into HomePage via route builder.
-
 void main() {
   test('homeRoutes exposes a single route for \'/\'', () {
     final routes = homeRoutes;
