@@ -63,6 +63,7 @@ jobs:
         uses: im-open/process-code-coverage-summary@v2.2.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          summary-file: 'coverage-results/Summary.md'
           create-pr-comment: true
           update-comment-if-one-exists: true
           update-comment-key: 'jest'
