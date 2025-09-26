@@ -10,8 +10,4 @@ class ShortUrl {
       alias: json['alias'] as String,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {'originalUrl': originalUrl, 'alias': alias};
-  }
 }
