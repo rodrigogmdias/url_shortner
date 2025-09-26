@@ -1,56 +1,56 @@
 # storage
 
-Armazenamento simples em memória reativo utilizado para prototipar histórico de URLs encurtadas. Fornece operações de chave/valor, listas serializadas em JSON e observação reativa de mudanças.
+Simple reactive in-memory storage used to prototype the history of shortened URLs. Provides key/value operations, JSON-serialized lists, and reactive change observation.
 
-## Principais APIs (`MemoryStorage`)
+## Main APIs (`MemoryStorage`)
 
-- `save(key, value)` — salva string.
-- `delete(key)` — remove chave.
-- `watch(key)` — stream de mudanças (inclui valor inicial).
-- `addToList(key, value)` — adiciona elemento serializado a uma lista JSON persistida em string.
-- `getList(key, fromJson)` — retorna lista desserializada.
-- `watchList(key, fromJson)` — stream reativa da lista inteira.
-- `clearList(key)` — limpa lista.
+- `save(key, value)` — save a string value.
+- `delete(key)` — remove a key.
+- `watch(key)` — change stream (includes the initial value).
+- `addToList(key, value)` — append a serialized element to a list persisted as a JSON string.
+- `getList(key, fromJson)` — return a deserialized list.
+- `watchList(key, fromJson)` — reactive stream of the whole list.
+- `clearList(key)` — clear a list.
 
-## Exemplo
+## Example
 
 ```dart
 final storage = MemoryStorage();
 await storage.save('foo', 'bar');
 
 storage.watch('foo').listen((value) {
-	// reage a mudanças
+  // react to changes
 });
 
 await storage.addToList('items', {'id': 1});
 final items = await storage.getList('items', (json) => json as Map<String, dynamic>);
 ```
 
-## Uso em Features
+## Usage in features
 
-- `create` adiciona `ShortUrl` em `'shortened_urls'` via `addToList`.
-- `history` observa `watchList('shortened_urls')` para renderizar atualizações em tempo quase real.
+- `create` adds `ShortUrl` into `'shortened_urls'` via `addToList`.
+- `history` observes `watchList('shortened_urls')` to render near-real-time updates.
 
-## Limitações
+## Limitations
 
-- Não persistente (tudo é perdido ao reiniciar o app).
-- Operações com listas desnormalizadas (re-escreve array inteiro a cada inclusão).
-- Sem locking / concorrência segura para múltiplos isolates.
+- Non-persistent (everything is lost when the app restarts).
+- List operations are denormalized (rewrites the entire array on each append).
+- No locking / concurrency safety for multiple isolates.
 
-## Evolução Sugerida
+## Suggested evolution
 
-- Substituir por Hive, Isar ou implementação abstraída via interface.
-- Introduzir TTL / expiração para histórico.
-- Migração para storage criptografado quando houver sensibilidade de dados.
+- Replace with Hive, Isar, or an abstracted storage interface.
+- Introduce TTL/expiration for history.
+- Migrate to encrypted storage when data sensitivity increases.
 
-## Desenvolvimento
+## Development
 
 ```
 dart format .
 dart fix --apply
 ```
 
-## Licença
+## License
 
-Uso interno no workspace.
+Internal use within this workspace.
 

@@ -1,55 +1,55 @@
 # create
 
-Feature responsável por encurtar URLs e persistir o resultado no storage em memória. Expõe `CreateWidget` e registra dependências via `injectable`.
+Feature responsible for shortening URLs and persisting the result in in-memory storage. Exposes `CreateWidget` and registers dependencies via `injectable`.
 
-## Fluxo
+## Flow
 
-1. Usuário digita uma URL no `DesignTextField`.
-2. Ao clicar em enviar (`DesignButton`), o `CreateCubit` chama `CreateUseCase`.
-3. O use case delega ao `CreateRepository` que simula (futuro: chama API) e persiste `ShortUrl` em `MemoryStorage` (lista `shortened_urls`).
-4. `History` feature recebe atualização via stream e lista item recém criado.
+1. The user enters a URL in the `DesignTextField`.
+2. On submit (`DesignButton`), `CreateCubit` calls `CreateUseCase`.
+3. The use case delegates to `CreateRepository` that simulates (future: calls an API) and persists `ShortUrl` into `MemoryStorage` (list key: `shortened_urls`).
+4. The `history` feature receives an update via stream and lists the newly created item.
 
-## Principais classes
+## Key classes
 
-- `CreateWidget` — Componente de UI (campo + botão + estados de loading via BlocBuilder).
-- `CreateCubit` / `CreateState` — Gerencia estados: initial, loading, success, error.
-- `CreateUseCase` — Boundary de domínio para criação.
-- `CreateRepository` — Interage com storage (futuro: rede + cache).
-- `ShortUrl` — Modelo simples (originalUrl, shortUrl).
+- `CreateWidget` — UI component (input + button + loading states via BlocBuilder).
+- `CreateCubit` / `CreateState` — Manages states: initial, loading, success, error.
+- `CreateUseCase` — Domain boundary for creation.
+- `CreateRepository` — Interacts with storage (future: network + cache).
+- `ShortUrl` — Simple model (originalUrl, shortUrl).
 
-## Exemplo de uso direto
+## Quick usage
 
 ```dart
-CreateWidget(); // inserido em uma tela (ex: HomePage)
+CreateWidget(); // place inside a page (e.g., HomePage)
 ```
 
-Reação ao sucesso/erro pode ser adicionada via `BlocListener` (já preparado no widget, faltando implementação de UI feedback).
+Success/error reactions can be added via `BlocListener` (the widget is ready; UI feedback is to be implemented).
 
-## Extensões futuras
+## Future extensions
 
-- Validação de URL (regex ou pacote `validators`).
-- Tratamento de erros de rede reais.
-- Feedback visual (SnackBar / Banner) no success/error.
-- Copiar automáticamente a URL encurtada.
+- URL validation (regex or `validators` package).
+- Real network error handling.
+- Visual feedback (SnackBar / Banner) on success/error.
+- Automatically copy the shortened URL.
 
-## Testes (a implementar)
+## Tests (to add)
 
-- Mock de `CreateUseCase` validando transições de estado.
-- Teste de integração adicionando item e verificando stream de histórico.
+- Mock `CreateUseCase` validating state transitions.
+- Integration test adding an item and verifying the history stream.
 
-## Desenvolvimento
+## Development
 
-Gerar DI quando houver novas anotações:
+Regenerate DI when new annotations are added:
 ```
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-Formatar:
+Format:
 ```
 dart format .
 ```
 
-## Licença
+## License
 
-Uso interno no workspace.
+Internal use within this workspace.
 

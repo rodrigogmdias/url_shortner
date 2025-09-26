@@ -1,48 +1,48 @@
 # home
 
-Feature que compõe a tela inicial do app agregando `CreateWidget` (encurtar URL) e `HistoryWidget` (histórico). Também expõe rotas via `homeRoutes` para integração no roteador principal.
+Feature that composes the app home screen by aggregating `CreateWidget` (shorten URL) and `HistoryWidget` (history). It also exposes routes via `homeRoutes` to integrate into the main router.
 
-## Rotas
+## Routes
 
-`homeRoutes` fornece:
+`homeRoutes` provides:
 
 ```dart
 AppRoute(path: '/', builder: (_, __) => const HomePage());
 ```
 
-## Composição de UI
+## UI composition
 
-`HomePage`:
-- Campo + botão para encurtar (feature create).
-- Lista / estado vazio / loading (feature history).
+`HomePage` contains:
+- Input + button to shorten (create feature).
+- List / empty / loading states (history feature).
 
-Estrutura simplificada:
+Simplified structure:
 ```dart
 Column(
-	children: [
-		CreateWidget(),
-		Expanded(child: HistoryWidget()),
-	],
+  children: [
+    CreateWidget(),
+    Expanded(child: HistoryWidget()),
+  ],
 )
 ```
 
-## Extensões futuras
+## Future extensions
 
-- AppBar com tema / branding.
-- Responsividade (layout adaptativo desktop/web).
-- Seções adicionais (analytics de cliques por URL, etc.).
+- AppBar with theme/branding.
+- Responsiveness (desktop/web adaptive layout).
+- Additional sections (click analytics per URL, etc.).
 
-## Integração
+## Integration
 
-No app host (ex: `routes.dart`) agregue `homeRoutes` às demais rotas de features antes de criar o `AppRouter`.
+In the app host (e.g., `routes.dart`), add `homeRoutes` to other feature routes before creating `AppRouter`.
 
-## Desenvolvimento
+## Development
 
 ```
 dart format .
 ```
 
-## Licença
+## License
 
-Uso interno no workspace.
+Internal use within this workspace.
 

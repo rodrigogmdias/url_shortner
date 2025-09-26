@@ -5,9 +5,9 @@ Lightweight HTTP layer for the workspace built on top of Dio, with a small set o
 - A typed service to send requests: `NetworkService`.
 - A simple `Endpoint` abstraction to model paths, methods, headers, query/body params, and content encoding.
 - Strongly-typed `NetworkResponse<T>` with helpers.
-- Unified error types via `NetworkError` sealed hierarchy.
+- Unified error types via a sealed `NetworkError` hierarchy.
 - A `DioProvider` that configures base URL and timeouts from `NetworkEnvironment`.
-- Injectable micro-package module to plug into the app container.
+- An injectable micro-package module to plug into the app container.
 
 This package is intended to be reused by features (create, history, home) to call backend APIs consistently.
 
@@ -23,13 +23,13 @@ From `package:network/network.dart`:
 
 ## Architecture at a glance
 
-- `NetworkEnvironment` exposes `baseUrl` (app provides the implementation for each flavor/environment).
+- `NetworkEnvironment` exposes `baseUrl` (the app provides the implementation for each flavor/environment).
 - `DioProvider` builds a `Dio` with the `baseUrl` and default timeouts.
 - `NetworkServiceImpl`:
-	- Maps an `Endpoint` to a `NetworkRequest`.
-	- Performs the request using Dio.
-	- Optionally decodes `response.data` into `T` using a provided `decoder`.
-	- Wraps results in `NetworkResponse<T>` and normalizes errors into `NetworkError` types.
+  - Maps an `Endpoint` to a `NetworkRequest`.
+  - Performs the request using Dio.
+  - Optionally decodes `response.data` into `T` using a provided `decoder`.
+  - Wraps results in `NetworkResponse<T>` and normalizes errors into `NetworkError` types.
 
 ## Setup (DI)
 
@@ -37,11 +37,11 @@ From `package:network/network.dart`:
 
 ```dart
 @InjectableInit(
-	externalPackageModulesAfter: [
-		ExternalModule(RouterPackageModule),
-		ExternalModule(NetworkPackageModule),
-		// ...other modules
-	],
+  externalPackageModulesAfter: [
+    ExternalModule(RouterPackageModule),
+    ExternalModule(NetworkPackageModule),
+    // ...other modules
+  ],
 )
 void configureDependencies() => getIt.init();
 ```
@@ -50,12 +50,12 @@ void configureDependencies() => getIt.init();
 
 ```dart
 class ProdNetworkEnvironment implements NetworkEnvironment {
-	@override
-	String get baseUrl => 'https://api.example.com';
+  @override
+  String get baseUrl => 'https://api.example.com';
 }
 
 void registerEnvironment(GetIt getIt) {
-	getIt.registerLazySingleton<NetworkEnvironment>(() => ProdNetworkEnvironment());
+  getIt.registerLazySingleton<NetworkEnvironment>(() => ProdNetworkEnvironment());
 }
 ```
 
@@ -71,24 +71,24 @@ Implement `Endpoint` to describe each call:
 
 ```dart
 class CreateShortUrlEndpoint implements Endpoint {
-	CreateShortUrlEndpoint(this.url);
-	final String url;
+  CreateShortUrlEndpoint(this.url);
+  final String url;
 
-	@override
-	String get path => '/shorten';
+  @override
+  String get path => '/shorten';
 
-	@override
-	HttpMethod get method => HttpMethod.post;
+  @override
+  HttpMethod get method => HttpMethod.post;
 
-	@override
-	ContentEncoding get contentEncoding => ContentEncoding.json;
+  @override
+  ContentEncoding get contentEncoding => ContentEncoding.json;
 
-	@override
-	Map<String, dynamic>? get bodyParameters => {'url': url};
+  @override
+  Map<String, dynamic>? get bodyParameters => {'url': url};
 
-	// Optional overrides:
-	// Map<String, dynamic>? get queryParameters => {...};
-	// Map<String, String>? get headers => {'X-Trace-Id': '...'};
+  // Optional overrides:
+  // Map<String, dynamic>? get queryParameters => {...};
+  // Map<String, String>? get headers => {'X-Trace-Id': '...'};
 }
 ```
 
@@ -100,13 +100,13 @@ Use `NetworkService.send<T>()`. Pass a `decoder` to map dynamic payloads into yo
 final service = getIt<NetworkService>();
 
 final res = await service.send<ShortUrlDto>(
-	CreateShortUrlEndpoint('https://dart.dev'),
-	decoder: (data) => ShortUrlDto.fromJson(data as Map<String, dynamic>),
+  CreateShortUrlEndpoint('https://dart.dev'),
+  decoder: (data) => ShortUrlDto.fromJson(data as Map<String, dynamic>),
 );
 
 if (res.isSuccess) {
-	// T is ShortUrlDto
-	final dto = res.data;
+  // T is ShortUrlDto
+  final dto = res.data;
 }
 ```
 
@@ -116,14 +116,14 @@ if (res.isSuccess) {
 final cancel = CancelToken();
 
 try {
-	final res = await service.send<void>(
-		SomeEndpoint(),
-		extraHeaders: {'Authorization': 'Bearer <token>'},
-		timeout: const Duration(seconds: 5),
-		cancelToken: cancel,
-	);
+  final res = await service.send<void>(
+    SomeEndpoint(),
+    extraHeaders: {'Authorization': 'Bearer <token>'},
+    timeout: const Duration(seconds: 5),
+    cancelToken: cancel,
+  );
 } finally {
-	cancel.cancel();
+  cancel.cancel();
 }
 ```
 
@@ -141,22 +141,22 @@ All Dio errors are converted into `NetworkError` types, making them easy to catc
 
 ```dart
 try {
-	final res = await service.send<MyDto>(endpoint, decoder: MyDto.fromAny);
-	// use res
+  final res = await service.send<MyDto>(endpoint, decoder: MyDto.fromAny);
+  // use res
 } on HttpStatusError catch (e) {
-	// 4xx/5xx with e.statusCode and optional e.body
+  // 4xx/5xx with e.statusCode and optional e.body
 } on NetworkTimeoutError {
-	// request timed out (either per-call timeout or Dio timeouts)
+  // request timed out (either per-call timeout or Dio timeouts)
 } on RequestCancelledError {
-	// cancel token triggered
+  // cancel token triggered
 } on NetworkConnectionError catch (e) {
-	// offline/DNS/SSL issues, see e.message
+  // offline/DNS/SSL issues, see e.message
 } on NetworkParsingError catch (e) {
-	// decoder failed to parse into T
+  // decoder failed to parse into T
 }
 ```
 
-`NetworkResponse<T>` exposes status code, headers e dados decodificados; o Response original do Dio não é mais exposto.
+`NetworkResponse<T>` exposes status code, headers, and decoded data; the raw Dio Response is not exposed anymore.
 
 ## Customizing Dio
 
@@ -165,22 +165,22 @@ If you need interceptors, headers, or other tuning, extend or replace `DioProvid
 ```dart
 @LazySingleton(as: DioProvider)
 class CustomDioProvider implements DioProvider {
-	CustomDioProvider(this.env);
-	final NetworkEnvironment env;
+  CustomDioProvider(this.env);
+  final NetworkEnvironment env;
 
-	@override
-	Dio get dio {
-		final dio = Dio(
-			BaseOptions(
-				baseUrl: env.baseUrl,
-				connectTimeout: const Duration(seconds: 10),
-				receiveTimeout: const Duration(seconds: 20),
-				sendTimeout: const Duration(seconds: 20),
-			),
-		);
-		dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
-		return dio;
-	}
+  @override
+  Dio get dio {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: env.baseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 20),
+        sendTimeout: const Duration(seconds: 20),
+      ),
+    );
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    return dio;
+  }
 }
 ```
 

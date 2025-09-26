@@ -1,58 +1,58 @@
 # history
 
-Feature que observa e exibe o histórico de URLs encurtadas. Atualiza em tempo quase real ao escutar a lista `'shortened_urls'` do `MemoryStorage`.
+Feature that observes and displays the history of shortened URLs. Updates near real time by listening to the `'shortened_urls'` list from `MemoryStorage`.
 
-## Fluxo
+## Flow
 
-1. `HistoryWidget` inicia e chama `HistoryCubit.load()`.
-2. Cubit emite `HistoryLoading` e assina a stream de `LoadHistoryUseCase`.
-3. Use case delega a `HistoryRepository.watchAll()` que retorna `watchList` invertido (mais recente primeiro).
-4. Ao receber dados: estado `HistoryLoaded` com lista.
+1. `HistoryWidget` starts and calls `HistoryCubit.load()`.
+2. The cubit emits `HistoryLoading` and subscribes to the stream from `LoadHistoryUseCase`.
+3. The use case delegates to `HistoryRepository.watchAll()` which returns a reversed `watchList` (newest first).
+4. On data emission, the cubit yields `HistoryLoaded` with the list.
 
-## Principais classes
+## Key classes
 
-- `HistoryWidget` — Renderiza título + lista ou estado vazio / loading.
-- `HistoryCubit` / `HistoryState` — Estados: initial, loading, loaded.
-- `LoadHistoryUseCase` — Boundary de domínio para observar histórico.
-- `HistoryRepository` — Adapta storage para stream tipada de `ShortUrl`.
-- `ShortUrl` — Mesmo modelo da feature `create` (com `fromJson`).
+- `HistoryWidget` — Renders title + list or empty/loading state.
+- `HistoryCubit` / `HistoryState` — States: initial, loading, loaded.
+- `LoadHistoryUseCase` — Domain boundary to observe history.
+- `HistoryRepository` — Adapts storage to a typed stream of `ShortUrl`.
+- `ShortUrl` — Same model as the `create` feature (with `fromJson`).
 
-## UI States
+## UI states
 
-- Loading: lista de placeholders.
-- Empty: widget `DesignEmpty` com ícone e mensagem.
-- Loaded: `ListView.separated` de `DesignListItem`.
+- Loading: list of placeholders.
+- Empty: `DesignEmpty` widget with icon and message.
+- Loaded: `ListView.separated` of `DesignListItem`.
 
-## Exemplo de uso
+## Usage
 
 ```dart
-HistoryWidget(); // normalmente dentro da HomePage
+HistoryWidget(); // typically inside HomePage
 ```
 
-## Extensões futuras
+## Future extensions
 
-- Ação de copiar URL curta (`Clipboard.setData`).
-- Paginação / limite máximo de itens armazenados.
-- Filtro / busca.
+- Copy short URL action (`Clipboard.setData`).
+- Pagination / maximum number of stored items.
+- Filter / search.
 
-## Testes sugeridos
+## Suggested tests
 
-- Mock do repositório emitindo listas vazia e não vazia.
-- Verificar transições de estado e renderização condicional.
+- Mock the repository to emit empty and non-empty lists.
+- Verify state transitions and conditional rendering.
 
-## Desenvolvimento
+## Development
 
-Gerar DI (quando houver mudanças de anotação):
+Regenerate DI when annotations change:
 ```
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-Formatar:
+Format:
 ```
 dart format .
 ```
 
-## Licença
+## License
 
-Uso interno no workspace.
+Internal use within this workspace.
 

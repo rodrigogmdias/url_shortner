@@ -1,105 +1,105 @@
 # router
 
-Pequena camada de conveniência sobre o `go_router` para padronizar rotas no monorepo e integrar com DI via `injectable`/`get_it`.
+Small convenience layer on top of `go_router` to standardize routes in the monorepo and integrate with DI via `injectable`/`get_it`.
 
-## Visão geral
+## Overview
 
-Este pacote expõe:
+This package exposes:
 
-- `AppRoute`: um wrapper leve para declarar rotas de forma tipada e compor rotas filhas. Converte para `GoRoute`.
-- `AppRouter`: orquestra a lista de `AppRoute`, cria um `GoRouter` com suporte a `initialLocation` e `errorBuilder` padrão.
-- `DefaultNotFound`: tela 404 simples usada como fallback.
-- `RouterPackageModule`: módulo de micro‑pacote do `injectable` (para integração DI no app host).
+- `AppRoute`: a lightweight wrapper to declare typed routes and compose child routes. Converts to `GoRoute`.
+- `AppRouter`: orchestrates a list of `AppRoute`, builds a `GoRouter` with support for `initialLocation` and a default `errorBuilder`.
+- `DefaultNotFound`: simple 404 fallback screen.
+- `RouterPackageModule`: injectable micro-package module (for DI integration in the host app).
 
-Exportações públicas em `router.dart`:
+Public exports in `router.dart`:
 
 - `src/app_route.dart`
 - `src/app_router.dart`
 - `src/dependencies/injectable.module.dart`
 
-## Dependências
+## Dependencies
 
 - flutter
 - go_router
 - get_it
-- injectable (+ build_runner e injectable_generator para código gerado)
+- injectable (+ build_runner and injectable_generator for generated code)
 
-Veja `pubspec.yaml` para as versões gerenciadas por workspace.
+See `pubspec.yaml` for workspace-managed versions.
 
-## Instalação
+## Installation
 
-O pacote já está parte do workspace Melos. Em um projeto externo, adicione no `pubspec.yaml` e rode:
+This package is already part of the Melos workspace. In an external project, add it to `pubspec.yaml` and run:
 
 ```
 melos bootstrap
 flutter pub get
 ```
 
-Se for usar a integração de DI do `injectable`, também gere os arquivos:
+If using `injectable` DI integration, generate code as well:
 
 ```
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-## Como usar
+## How to use
 
-### 1) Defina suas rotas com `AppRoute`
+### 1) Define your routes with `AppRoute`
 
 ```dart
-// em algum package de feature ou no app
+// in a feature package or the app
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:router/router.dart';
 
 final routes = <AppRoute>[
-	AppRoute(
-		path: '/',
-		name: 'home',
-		builder: (context, state) => const HomePage(),
-		routes: [
-			AppRoute(
-				path: 'details',
-				name: 'details',
-				builder: (context, state) => const DetailsPage(),
-			),
-		],
-	),
+  AppRoute(
+    path: '/',
+    name: 'home',
+    builder: (context, state) => const HomePage(),
+    routes: [
+      AppRoute(
+        path: 'details',
+        name: 'details',
+        builder: (context, state) => const DetailsPage(),
+      ),
+    ],
+  ),
 ];
 ```
 
-Cada `AppRoute` é convertido para `GoRoute` via `toGoRoute()`, preservando `path`, `name`, `builder` e rotas filhas.
+Each `AppRoute` is converted to a `GoRoute` via `toGoRoute()`, preserving `path`, `name`, `builder`, and child routes.
 
-### 2) Crie o `AppRouter` com a lista de rotas
+### 2) Create the `AppRouter` with the route list
 
 ```dart
 final appRouter = AppRouter(
-	routes,
-	initialLocation: '/', // opcional
+  routes,
+  initialLocation: '/', // optional
 );
 
-// Em um MaterialApp.router
+// Inside a MaterialApp.router
 MaterialApp.router(
-	routerConfig: appRouter.routerConfig,
+  routerConfig: appRouter.routerConfig,
 );
 ```
 
-O `AppRouter` aplica um `errorBuilder` padrão que renderiza `DefaultNotFound` exibindo a URL.
+`AppRouter` applies a default `errorBuilder` that renders `DefaultNotFound` showing the URL.
 
-### 3) Navegação
+### 3) Navigation
 
-Como usa `go_router`, a navegação é a mesma API:
+Since this uses `go_router`, navigation is the same API:
 
 ```dart
-// por name
+// by name
 context.goNamed('details');
 
-// por path
+// by path
 context.go('/details');
 ```
 
-## Integração com DI (`injectable`/`get_it`)
+## DI integration (`injectable`/`get_it`)
 
-O pacote expõe um `MicroPackageModule` gerado (`RouterPackageModule`) para ser incluído no `init` do app host. No app, algo como:
+This package exposes a generated `MicroPackageModule` (`RouterPackageModule`) to be included in the host app init. In the app, something like:
 
 ```dart
 // app/lib/dependencies/injectable.dart
@@ -109,66 +109,66 @@ import 'injectable.config.dart';
 @InjectableInit()
 Future<void> configureDependencies() async => getIt.init();
 
-// Em algum ponto, o código gerado chama:
+// Somewhere, the generated code calls:
 // await RouterPackageModule().init(gh);
 ```
 
-No micro‑pacote `router`, existe também um `@InjectableInit.microPackage()` exposto em `src/dependencies/injectable.dart` (caso precise evoluir o módulo com bindings próprios futuramente).
+In the `router` micro‑package, there is also an `@InjectableInit.microPackage()` exposed in `src/dependencies/injectable.dart` (in case the module evolves to include its own bindings).
 
-## Personalizações
+## Customization
 
-- Substituir a página 404: altere `AppRouter` para aceitar um `errorBuilder` customizado ou forneça outra implementação de `DefaultNotFound` no app host.
-- Guardas/redirecionamentos: como a base é `go_router`, você pode estender `AppRoute` para incluir `redirect`/`routes` com `GoRoute` avançado se necessário.
+- Replace the 404 page: change `AppRouter` to accept a custom `errorBuilder` or provide another `DefaultNotFound` implementation in the host app.
+- Guards/redirects: since the base is `go_router`, you can extend `AppRoute` to include `redirect`/`routes` with advanced `GoRoute` usage if needed.
 
-## Exemplos rápidos
+## Quick examples
 
-### Declarando uma rota com parâmetros
-
-```dart
-AppRoute(
-	path: '/user/:id',
-	name: 'user',
-	builder: (context, state) {
-		final id = state.pathParameters['id']!;
-		return UserPage(id: id);
-	},
-);
-```
-
-### Rotas aninhadas
+### Declaring a route with parameters
 
 ```dart
 AppRoute(
-	path: '/settings',
-	name: 'settings',
-	builder: (c, s) => const SettingsPage(),
-	routes: [
-		AppRoute(
-			path: 'profile',
-			name: 'settings_profile',
-			builder: (c, s) => const ProfileSettingsPage(),
-		),
-	],
+  path: '/user/:id',
+  name: 'user',
+  builder: (context, state) {
+    final id = state.pathParameters['id']!;
+    return UserPage(id: id);
+  },
 );
 ```
 
-## Estrutura do pacote
+### Nested routes
 
-- `lib/router.dart`: exporta a API pública.
-- `lib/src/app_route.dart`: declaração de `AppRoute` e conversão para `GoRoute`.
-- `lib/src/app_router.dart`: infraestrutura do `GoRouter` e `routerConfig`.
-- `lib/src/default_not_found.dart`: tela de fallback 404.
-- `lib/src/dependencies/…`: integrações `injectable`.
+```dart
+AppRoute(
+  path: '/settings',
+  name: 'settings',
+  builder: (c, s) => const SettingsPage(),
+  routes: [
+    AppRoute(
+      path: 'profile',
+      name: 'settings_profile',
+      builder: (c, s) => const ProfileSettingsPage(),
+    ),
+  ],
+);
+```
 
-## Desenvolvimento
+## Package structure
 
-- Formatação e fixes automáticos:
-	- `dart format .`
-	- `dart fix --apply`
-- Gerar código de DI (quando houver alterações nas anotações):
-	- `dart run build_runner build --delete-conflicting-outputs`
+- `lib/router.dart`: exports the public API.
+- `lib/src/app_route.dart`: `AppRoute` declaration and conversion to `GoRoute`.
+- `lib/src/app_router.dart`: `GoRouter` infrastructure and `routerConfig`.
+- `lib/src/default_not_found.dart`: 404 fallback screen.
+- `lib/src/dependencies/…`: `injectable` integrations.
 
-## Licença
+## Development
 
-Uso interno no workspace. Ajuste conforme a política do projeto.
+- Formatting and fixes:
+  - `dart format .`
+  - `dart fix --apply`
+- Generate DI code (when annotations change):
+  - `dart run build_runner build --delete-conflicting-outputs`
+
+## License
+
+Internal use within this workspace. Adjust according to the project policy.
 

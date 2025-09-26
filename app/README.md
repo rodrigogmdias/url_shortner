@@ -1,58 +1,58 @@
 # App Host
 
-Aplicação Flutter principal que agrega rotas e widgets das features (`create`, `history`, `home`) e inicializa DI antes de rodar.
+Main Flutter application that aggregates routes and widgets from the features (`create`, `history`, `home`) and initializes DI before running.
 
-## Responsabilidades
+## Responsibilities
 
-- Inicializar dependências via `configureDependencies()`.
-- Compor rotas de features em `routes.dart`.
-- Rodar `MaterialApp.router` com `AppRouter` (pacote `router`).
-- Servir como container para tema global / configurações futuras.
+- Initialize dependencies via `configureDependencies()`.
+- Compose feature routes in `routes.dart`.
+- Run `MaterialApp.router` with `AppRouter` (from the `router` package).
+- Act as the container for global theming and future app-wide settings.
 
-## Estrutura relevante
+## Relevant structure
 
-- `lib/main.dart` — entrypoint principal.
-- `lib/app.dart` — widget raiz (`App`) com configuração de tema e router.
-- `lib/routes.dart` — agrega rotas exportadas por features.
-- `lib/dependencies/` — configuração de DI (`injectable.dart`, código gerado).
+- `lib/main.dart` — main entrypoint.
+- `lib/app.dart` — root widget (`App`) with theme and router configuration.
+- `lib/routes.dart` — aggregates routes exported by features.
+- `lib/dependencies/` — DI setup (`injectable.dart`, generated code).
 
-## Executar somente o app
+## Run only the app
 
-Do diretório raiz (usando Melos):
+From the repo root (using Melos):
 ```
 melos exec -c 1 --scope=app -- flutter run -d <device_id>
 ```
 
-Ou diretamente:
+Or directly:
 ```
 cd app
 flutter run -d <device_id>
 ```
 
-Listar devices:
+List devices:
 ```
 flutter devices
 ```
 
-## Geração de código (DI)
+## Code generation (DI)
 
-Recrie arquivos gerados ao alterar anotações:
+Regenerate files when annotations change:
 ```
 melos run generate
 ```
-Ou
+Or
 ```
 dart run melos run generate
 ```
 
-## Próximas melhorias
+## Next improvements
 
-- Theming (cores, dark mode).
-- Internacionalização.
-- Logger / observabilidade.
-- Integração real de rede (quando pacote `network` evoluir).
+- Theming (colors, dark mode).
+- Internationalization.
+- Logging/observability.
+- Real network integration (as the `network` package evolves).
 
-## Licença
+## License
 
-Uso interno no workspace.
+Internal use within this workspace.
 
