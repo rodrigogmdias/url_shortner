@@ -29,3 +29,7 @@ melos:
       description: Run tests for all workspace packages
       run: |
         melos exec -c 1 --dir-exists=test --flutter -- flutter test
+    test_coverage:
+      description: Run tests with coverage for all workspace packages
+      run: |
+        melos exec -c 1 --dir-exists=test --flutter -- flutter test --coverage
