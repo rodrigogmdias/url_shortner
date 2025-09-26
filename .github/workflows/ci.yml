@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Enable Flutter Linux dependencies
+        run: sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+
+      - name: Dart & Flutter Versions
+        run: |
+          dart --version
+          flutter --version
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap workspace
+        run: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          melos bootstrap
+
+      - name: Generate code (build_runner)
+        run: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          melos run generate
+
+      - name: Run tests with coverage per package
+        run: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          melos run test_coverage
+
+      - name: List coverage files
+        run: |
+          echo "Workspace root: $(pwd)"
+          ls -la
+          echo "\nFound coverage files:"
+          find . -type f -name lcov.info -print
+
+      - name: Convert LCOV to Cobertura XML per package
+        run: |
+          # Install converter
+          sudo apt-get update && sudo apt-get install -y python3-pip
+          python3 -m pip install --upgrade pip
+          python3 -m pip install lcov-cobertura
+
+          # Convert each lcov.info to cobertura.xml in its package folder
+          while IFS= read -r file; do
+            pkg_dir="$(dirname "$file")/.."
+            pkg_dir="$(cd "$pkg_dir" && pwd)"
+            echo "Converting $file in $pkg_dir"
+            pushd "$pkg_dir" >/dev/null
+
+            python3 -m lcov_cobertura coverage/lcov.info -o coverage/cobertura.xml || true
+
+            popd >/dev/null
+          done < <(find packages -type f -path "*/coverage/lcov.info"; find app -type f -path "*/coverage/lcov.info" || true)
+
+      - name: Code Coverage Summary (markdown + file)
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: packages/**/coverage/cobertura.xml, app/**/coverage/cobertura.xml
+          badge: true
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '60 80'
+
+      - name: Publish summary to Job Summary
+        if: always()
+        run: |
+          if [ -f code-coverage-results.md ]; then
+            echo "Appending coverage summary to job summary"
+            cat code-coverage-results.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No coverage summary file generated. Skipping job summary append."
+          fi
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            packages/**/coverage/lcov.info
+            packages/**/coverage/cobertura.xml
+            app/**/coverage/lcov.info
+            app/**/coverage/cobertura.xml
+            code-coverage-results.md
+            code-coverage-results.txt
+
+      - name: Add or update PR comment with coverage
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          path: code-coverage-results.md
