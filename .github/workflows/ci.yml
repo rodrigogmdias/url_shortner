@@ -56,7 +56,6 @@ jobs:
         uses: im-open/code-coverage-report-generator@4.9.0
         with:
           reports: '*/**/lcov.info'
-          targetdir: ./coverage-results
           title: jest code coverage
 
       - name: create status check/comment for code coverage results
@@ -64,7 +63,6 @@ jobs:
         uses: im-open/process-code-coverage-summary@v2.2.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          summary-file: './coverage-results/jest-summary.md'
           create-pr-comment: true
           update-comment-if-one-exists: true
           update-comment-key: 'jest'
